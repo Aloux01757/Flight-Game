@@ -34,14 +34,18 @@ public class Movement : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.A))
         {
-          transform.Rotate(Vector3.forward * rotationThrust * Time.deltaTime); // without parameter 
+            ApplyRotation(rotationThrust); // with parameter 
         }
         else if (Input.GetKey(KeyCode.D))
         {
-          transform.Rotate(-Vector3.forward * rotationThrust * Time.deltaTime); // without parameter 
+          ApplyRotation(-rotationThrust); // with parameter 
         }
     }
 
-      
+    private void ApplyRotation(float rotationThisFrame) // with parameter 
+    {
+        transform.Rotate(Vector3.forward * rotationThisFrame * Time.deltaTime);
+    }
+
 
 }
