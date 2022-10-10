@@ -32,15 +32,13 @@ public class Movement : MonoBehaviour
 
     void ProcessRotation()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKey(KeyCode.A))
         {
-         
-
+          transform.Rotate(Vector3.forward * rotationThrust * Time.deltaTime); // without parameter 
         }
-         if (Input.GetKeyDown(KeyCode.D))
+        else if (Input.GetKey(KeyCode.D))
         {
-        
-
+          transform.Rotate(-Vector3.forward * rotationThrust * Time.deltaTime); // without parameter 
         }
     }
 
