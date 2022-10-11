@@ -1,3 +1,4 @@
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class CollisionHandler : MonoBehaviour
@@ -16,8 +17,13 @@ public class CollisionHandler : MonoBehaviour
             Debug.Log("You gain points!");
             break;
             default:
-            Debug.Log("Sorry, I'm terrible");
+            ReloadLevel();
             break;
         }
+    }
+
+      void ReloadLevel()
+    {
+        SceneManager.LoadScene(0); 
     }
 }
