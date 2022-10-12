@@ -11,8 +11,8 @@ public class CollisionHandler : MonoBehaviour
             Debug.Log("this thing is friendly");
             break;
             case "Finish":
-            Debug.Log("You've finished!");
-            break;
+                LoadNextLevel();
+                break;
             case "Fuel":
             Debug.Log("You gain points!");
             break;
@@ -22,9 +22,15 @@ public class CollisionHandler : MonoBehaviour
         }
     }
 
-      void ReloadLevel() // apply clean code
+    void LoadNextLevel()
     {
-        int currentScene = SceneManager.GetActiveScene().buildIndex; // Create a variable with clean code applied
-        SceneManager.LoadScene(currentScene); // current scene load
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex; 
+        SceneManager.LoadScene(currentSceneIndex + 1); // load next scene, however, it has bug
+    }
+
+    void ReloadLevel() // apply clean code
+    {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex; // Create a variable with clean code applied
+        SceneManager.LoadScene(currentSceneIndex); // current scene load
     }
 }
