@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class CollisionHandler : MonoBehaviour
 {
+    [SerializeField]float levelLoadDelay = 2f;
     void OnCollisionEnter(Collision other)
     {
         switch (other.gameObject.tag) // variable here
@@ -11,17 +12,29 @@ public class CollisionHandler : MonoBehaviour
             Debug.Log("this thing is friendly");
             break;
             case "Finish":
-                LoadNextLevel();
+                StartSucessSequence();
                 break;
-            case "Fuel":
-            Debug.Log("You gain points!");
-            break;
             default:
-            ReloadLevel();
+            StartCrashSequence();
             break;
         }
     }
 
+    void StartCrashSequence()
+    {
+        //todo add SFX upon crash
+        //todo add particle effect upon crash
+        GetComponent<Movement>().enabled = false; //It's doesn't need create reference cache.
+        Invoke("ReloadLevel", levelLoadDelay);
+    }
+
+    void StartSucessSequence()
+    {
+       //todo add SFX upon crash
+       //todo add particle effect upon crash
+       GetComponent<Movement>().enabled = false; //It's doesn't need create reference cache.
+       Invoke("LoadNextLevel", levelLoadDelay);
+    }
     void LoadNextLevel()
     {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex; 
