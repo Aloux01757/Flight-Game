@@ -4,6 +4,15 @@ using UnityEngine;
 public class CollisionHandler : MonoBehaviour
 {
     [SerializeField]float levelLoadDelay = 2f;
+    [SerializeField]AudioClip crash;
+    [SerializeField]AudioClip sucess;
+
+    AudioSource audioSource;
+
+    void Start() 
+    {
+        audioSource = GetComponent<AudioSource>(); // remember always cache reference
+    }
     void OnCollisionEnter(Collision other)
     {
         switch (other.gameObject.tag) // variable here
@@ -24,6 +33,7 @@ public class CollisionHandler : MonoBehaviour
     {
         //todo add SFX upon crash
         //todo add particle effect upon crash
+        audioSource.PlayOneShot(crash);
         GetComponent<Movement>().enabled = false; //It's doesn't need create reference cache.
         Invoke("ReloadLevel", levelLoadDelay);
     }
@@ -31,7 +41,8 @@ public class CollisionHandler : MonoBehaviour
     void StartSucessSequence()
     {
        //todo add SFX upon crash
-       //todo add particle effect upon crash
+       //todo add particle effect upon sucess
+        audioSource.PlayOneShot(sucess);
        GetComponent<Movement>().enabled = false; //It's doesn't need create reference cache.
        Invoke("LoadNextLevel", levelLoadDelay);
     }

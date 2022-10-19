@@ -9,6 +9,7 @@ public class Movement : MonoBehaviour
 
     Rigidbody rb;
     AudioSource audioSource;
+    [SerializeField] AudioClip mainEngine;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,7 +32,7 @@ public class Movement : MonoBehaviour
         
          if(!audioSource.isPlaying)
           {
-            audioSource.Play();
+            audioSource.PlayOneShot(mainEngine);
           }
         }
        else  //it must stay down than processThurust, because will conflict it
