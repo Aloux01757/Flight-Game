@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
+
+  // Parameters [Seri...]
+  //Cache = Rigidbody rb;
+  //State = variable
     [SerializeField] float mainThrust = 100f;
     [SerializeField] float rotationThrust = 1f;
 

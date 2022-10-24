@@ -9,6 +9,8 @@ public class CollisionHandler : MonoBehaviour
 
     AudioSource audioSource;
 
+    bool isTransitioning = false;
+
     void Start() 
     {
         audioSource = GetComponent<AudioSource>(); // remember always cache reference
@@ -33,7 +35,13 @@ public class CollisionHandler : MonoBehaviour
     {
         //todo add SFX upon crash
         //todo add particle effect upon crash
-        audioSource.PlayOneShot(crash);
+        if(isTransitioning == false)
+        {
+            audioSource.Stop(); // remove thrust noise after crash or sucess
+            audioSource.PlayOneShot(crash);
+            isTransitioning = true;
+        }
+
         GetComponent<Movement>().enabled = false; //It's doesn't need create reference cache.
         Invoke("ReloadLevel", levelLoadDelay);
     }
@@ -42,7 +50,13 @@ public class CollisionHandler : MonoBehaviour
     {
        //todo add SFX upon crash
        //todo add particle effect upon sucess
-        audioSource.PlayOneShot(sucess);
+       if(isTransitioning == false)
+       {
+            audioSource.Stop(); // remove thrust noise after crash or sucess
+            audioSource.PlayOneShot(sucess);
+            isTransitioning =true   ;
+       }
+
        GetComponent<Movement>().enabled = false; //It's doesn't need create reference cache.
        Invoke("LoadNextLevel", levelLoadDelay);
     }
