@@ -8,12 +8,13 @@ public class Movement : MonoBehaviour
   // Parameters [Seri...]
   //Cache = Rigidbody rb;
   //State = variable
+    [SerializeField] AudioClip mainEngine;
     [SerializeField] float mainThrust = 100f;
     [SerializeField] float rotationThrust = 1f;
 
     Rigidbody rb;
     AudioSource audioSource;
-    [SerializeField] AudioClip mainEngine;
+
     // Start is called before the first frame update
     void Start()
     {
