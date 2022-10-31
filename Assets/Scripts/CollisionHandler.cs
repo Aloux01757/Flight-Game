@@ -7,13 +7,18 @@ public class CollisionHandler : MonoBehaviour
     [SerializeField]AudioClip crash;
     [SerializeField]AudioClip sucess;
 
+    [SerializeField]ParticleSystem crashParticles; //it doesn't need cache
+    [SerializeField]ParticleSystem sucessParticles; //it doesn't need cache
+
     AudioSource audioSource;
+    ParticleSystem particlesystem;
 
     bool isTransitioning = false;
 
     void Start() 
     {
         audioSource = GetComponent<AudioSource>(); // remember always cache reference
+        particlesystem = GetComponent<ParticleSystem>();
     }
     void OnCollisionEnter(Collision other)
     {
@@ -37,6 +42,7 @@ public class CollisionHandler : MonoBehaviour
         //todo add particle effect upon crash
         if(isTransitioning == false)
         {
+            crashParticles.Play(); //Data Type with method
             audioSource.Stop(); // remove thrust noise after crash or sucess
             audioSource.PlayOneShot(crash);
             isTransitioning = true;
@@ -52,10 +58,14 @@ public class CollisionHandler : MonoBehaviour
        //todo add particle effect upon sucess
        if(isTransitioning == false)
        {
+            sucessParticles.Play(); //Data Type with method
             audioSource.Stop(); // remove thrust noise after crash or sucess
             audioSource.PlayOneShot(sucess);
-            isTransitioning =true   ;
+            isTransitioning =true;
        }
+
+        
+
 
        GetComponent<Movement>().enabled = false; //It's doesn't need create reference cache.
        Invoke("LoadNextLevel", levelLoadDelay);
