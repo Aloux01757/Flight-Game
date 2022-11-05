@@ -11,16 +11,15 @@ public class CollisionHandler : MonoBehaviour
     [SerializeField]ParticleSystem sucessParticles; //it doesn't need cache
 
     AudioSource audioSource;
-    ParticleSystem particlesystem;
+
 
     bool isTransitioning = false;
 
     void Start() 
     {
         audioSource = GetComponent<AudioSource>(); // remember always cache reference
-        particlesystem = GetComponent<ParticleSystem>();
     }
-    void OnCollisionEnter(Collision other)
+    void OnCollisionEnter(Collision other) // call when touched another rigidbody/collider
     {
         switch (other.gameObject.tag) // variable here
         {
@@ -38,43 +37,41 @@ public class CollisionHandler : MonoBehaviour
 
     void StartCrashSequence()
     {
-        //todo add SFX upon crash
-        //todo add particle effect upon crash
+
         if(isTransitioning == false)
         {
-            crashParticles.Play(); //Data Type with method
-            audioSource.Stop(); // remove thrust noise after crash or sucess
+            crashParticles.Play(); 
+            audioSource.Stop(); 
             audioSource.PlayOneShot(crash);
-            isTransitioning = true;
+            isTransitioning = true; // in order to stop repeat or another function
         }
 
-        GetComponent<Movement>().enabled = false; //It's doesn't need create reference cache.
+        GetComponent<Movement>().enabled = false; // Disable script Moviment
         Invoke("ReloadLevel", levelLoadDelay);
     }
 
     void StartSucessSequence()
     {
-       //todo add SFX upon crash
-       //todo add particle effect upon sucess
+
        if(isTransitioning == false)
        {
-            sucessParticles.Play(); //Data Type with method
-            audioSource.Stop(); // remove thrust noise after crash or sucess
+            sucessParticles.Play(); 
+            audioSource.Stop();
             audioSource.PlayOneShot(sucess);
-            isTransitioning =true;
+            isTransitioning =true; // in order to stop repeat or another function
        }
 
         
 
 
-       GetComponent<Movement>().enabled = false; //It's doesn't need create reference cache.
+       GetComponent<Movement>().enabled = false; // Disable script Moviment
        Invoke("LoadNextLevel", levelLoadDelay);
     }
     void LoadNextLevel()
     {
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex; 
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex; // Check current Scene
         int nextSceneIndex = currentSceneIndex + 1;
-        if(nextSceneIndex == SceneManager.sceneCountInBuildSettings)
+        if(nextSceneIndex == SceneManager.sceneCountInBuildSettings) // Check many scenes
         {
             nextSceneIndex = 0;
         }

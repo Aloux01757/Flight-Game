@@ -1,4 +1,4 @@
-  using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,21 +8,24 @@ public class Movement : MonoBehaviour
   // Parameters [Seri...]
   //Cache = Rigidbody rb;
   //State = variable
-    [SerializeField] AudioClip mainEngine;
-    [SerializeField] float mainThrust = 100f;
-    [SerializeField] float rotationThrust = 1f;
+  [SerializeField] ParticleSystem mainBoosterParticle;
+  [SerializeField] ParticleSystem leftBoosterParticle;
+  [SerializeField] ParticleSystem rightBoosterParticle;
+  [SerializeField] AudioClip mainEngine;
+  [SerializeField] float mainThrust = 100f;
+  [SerializeField] float rotationThrust = 1f;
+
 
     Rigidbody rb;
     AudioSource audioSource;
 
-    // Start is called before the first frame update
+
     void Start()
     {
-      rb = GetComponent<Rigidbody>();
-      audioSource = GetComponent<AudioSource>();
+      rb = GetComponent<Rigidbody>(); // remember always cache reference
+      audioSource = GetComponent<AudioSource>(); // remember always cache reference
     }
 
-    // Update is called once per frame
     void Update()
     {
         ProcessThrust();
@@ -33,16 +36,22 @@ public class Movement : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Space))
         {
-          rb.AddRelativeForce(Vector3.up * mainThrust * Time.deltaTime);
+          rb.AddRelativeForce(Vector3.up * mainThrust * Time.deltaTime); // add force relative coordinate system
         
          if(!audioSource.isPlaying)
           {
-            audioSource.PlayOneShot(mainEngine);
+            audioSource.PlayOneShot(mainEngine); // Play once audio clip
           }
+          if(!mainBoosterParticle.isPlaying) 
+          {
+            mainBoosterParticle.Play(); // fix the bug
+          }
+          
         }
        else  //it must stay down than processThurust, because will conflict it
       {
         audioSource.Stop();
+        mainBoosterParticle.Stop();
       }
 
     }
@@ -52,14 +61,30 @@ public class Movement : MonoBehaviour
         if (Input.GetKey(KeyCode.A))
         {
             ApplyRotation(rotationThrust); // with parameter 
+            if(!leftBoosterParticle.isPlaying)
+            {
+                leftBoosterParticle.Play(); // fix the bug
+            }
+          
         }
         else if (Input.GetKey(KeyCode.D))
         {
           ApplyRotation(-rotationThrust); // with parameter 
+          if(!rightBoosterParticle.isPlaying)
+            {
+              rightBoosterParticle.Play(); // fix the bug
+            }
+          
+        }
+
+        else
+        {
+          rightBoosterParticle.Stop();
+          leftBoosterParticle.Stop();
         }
     }
 
-    private void ApplyRotation(float rotationThisFrame) // with parameter 
+    private void ApplyRotation(float rotationThisFrame) //  rename with new parameter 
     {
       rb.freezeRotation = true; // freezing rotation so we can mannually rotate
       transform.Rotate(Vector3.forward * rotationThisFrame * Time.deltaTime);
