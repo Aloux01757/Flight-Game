@@ -11,7 +11,9 @@ public class Movement : MonoBehaviour
   [SerializeField] ParticleSystem mainBoosterParticle;
   [SerializeField] ParticleSystem leftBoosterParticle;
   [SerializeField] ParticleSystem rightBoosterParticle;
+
   [SerializeField] AudioClip mainEngine;
+
   [SerializeField] float mainThrust = 100f;
   [SerializeField] float rotationThrust = 1f;
 
@@ -36,52 +38,74 @@ public class Movement : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Space))
         {
-          rb.AddRelativeForce(Vector3.up * mainThrust * Time.deltaTime); // add force relative coordinate system
-        
-         if(!audioSource.isPlaying)
-          {
-            audioSource.PlayOneShot(mainEngine); // Play once audio clip
-          }
-          if(!mainBoosterParticle.isPlaying) 
-          {
-            mainBoosterParticle.Play(); // fix the bug
-          }
-          
+            StartThrusting();
         }
-       else  //it must stay down than processThurust, because will conflict it
-      {
-        audioSource.Stop();
-        mainBoosterParticle.Stop();
-      }
+        else  //it must stay down than processThurust, because will conflict it
+        {
+            StopThrusting();
+        }
 
     }
 
-    void ProcessRotation()
+  void ProcessRotation()
     {
         if (Input.GetKey(KeyCode.A))
         {
-            ApplyRotation(rotationThrust); // with parameter 
-            if(!leftBoosterParticle.isPlaying)
-            {
-                leftBoosterParticle.Play(); // fix the bug
-            }
-          
+            StartThrustingLeft();
         }
         else if (Input.GetKey(KeyCode.D))
         {
-          ApplyRotation(-rotationThrust); // with parameter 
-          if(!rightBoosterParticle.isPlaying)
-            {
-              rightBoosterParticle.Play(); // fix the bug
-            }
-          
+            StartThrustingRight();
         }
 
         else
         {
-          rightBoosterParticle.Stop();
-          leftBoosterParticle.Stop();
+            StopThrustingBoth();
         }
+    }
+
+    void StartThrusting()
+    {
+        rb.AddRelativeForce(Vector3.up * mainThrust * Time.deltaTime); // add force relative coordinate system
+
+        if (!audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot(mainEngine); // Play once audio clip
+        }
+        if (!mainBoosterParticle.isPlaying)
+        {
+            mainBoosterParticle.Play(); // fix the bug
+        }
+    }
+
+      void StopThrusting()
+    {
+        audioSource.Stop();
+        mainBoosterParticle.Stop();
+    }
+
+    void StartThrustingRight()
+    {
+        ApplyRotation(-rotationThrust); // with parameter 
+        if (!rightBoosterParticle.isPlaying)
+        {
+            rightBoosterParticle.Play(); // fix the bug
+        }
+    }
+
+    void StartThrustingLeft()
+    {
+        ApplyRotation(rotationThrust); // with parameter 
+        if (!leftBoosterParticle.isPlaying)
+        {
+            leftBoosterParticle.Play(); // fix the bug
+        }
+    }
+
+    void StopThrustingBoth()
+    {
+        rightBoosterParticle.Stop();
+        leftBoosterParticle.Stop();
     }
 
     private void ApplyRotation(float rotationThisFrame) //  rename with new parameter 

@@ -13,14 +13,33 @@ public class CollisionHandler : MonoBehaviour
     AudioSource audioSource;
 
 
+
     bool isTransitioning = false;
+    bool isColliderDisabled = false;
 
     void Start() 
     {
         audioSource = GetComponent<AudioSource>(); // remember always cache reference
+
     }
+
+    void Update()
+    {
+        DebugCheatKeys();
+
+    }
+
+    void DebugCheatKeys()
+    {
+        if (Input.GetKeyDown(KeyCode.C)) { isColliderDisabled = !isColliderDisabled; } // toggle collision
+
+        else if (Input.GetKeyDown(KeyCode.L)) { LoadNextLevel(); }
+    }
+
     void OnCollisionEnter(Collision other) // call when touched another rigidbody/collider
     {
+           if (isTransitioning || isColliderDisabled) { return; }
+
         switch (other.gameObject.tag) // variable here
         {
             case "Friendly":
@@ -38,16 +57,19 @@ public class CollisionHandler : MonoBehaviour
     void StartCrashSequence()
     {
 
-        if(isTransitioning == false)
-        {
+            if(isTransitioning == false)
+            {
             crashParticles.Play(); 
             audioSource.Stop(); 
             audioSource.PlayOneShot(crash);
             isTransitioning = true; // in order to stop repeat or another function
-        }
+            }
 
         GetComponent<Movement>().enabled = false; // Disable script Moviment
         Invoke("ReloadLevel", levelLoadDelay);
+
+
+        
     }
 
     void StartSucessSequence()
