@@ -17,6 +17,7 @@ public class Oscillator : MonoBehaviour
 
     void Update()
     {
+        if(period <= Mathf.Epsilon){return;} // o menor  numero de todos
         float cycles = Time.time / period; // deixar crescendo no looping 
         const float tau = Mathf.PI * 2; // costante de valor 6.283 (Ciruculo completo)
 
